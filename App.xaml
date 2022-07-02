@@ -1,0 +1,14 @@
+﻿<Application x:Class="MuraevKursovoi.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:MuraevKursovoi"
+             StartupUri="Windows/MainWindow.xaml">
+    <Application.Resources>
+        <Style x:Key="DefoultWindow" TargetType="Window">
+                <Setter Property="Window.MinWidth" Value="1000"/>
+                <Setter Property="Window.MinHeight" Value="600"/>
+        </Style>
+        <ResourceDictionary x:Key="JoinStringConverter" Source="IMultiValueConverter">
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

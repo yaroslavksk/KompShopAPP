@@ -1,0 +1,42 @@
+﻿<Window x:Class="MuraevKursovoi.Windows.DeliveryWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MuraevKursovoi.Windows"
+        mc:Ignorable="d"
+        Title="Просмотр" Height="450" Width="800" Style="{StaticResource DefoultWindow}">
+    <Grid Background="Aquamarine">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.ColumnSpan="5" Height="15" VerticalAlignment="Top" Background="White"  Orientation="Horizontal">
+            <TextBlock Text="О программе" FontSize="9" VerticalAlignment="Center" Margin="5,0,0,0" MouseDown="TextBlockMes_MouseDown" />
+        </StackPanel>
+
+        <DataGrid Name="DGviev" Grid.Row="1" Grid.ColumnSpan="5" Grid.RowSpan="3" Margin="15" AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID поставки" Binding="{Binding IDDelivery}"/>
+                <DataGridTextColumn Header="Компания" Binding="{Binding Vendor.Name}"/>
+                <DataGridTextColumn Header="Поставщик" Binding="{Binding Vendor.Maneger}"/>
+                <DataGridTextColumn Header="Дата" Binding="{Binding Date}"/>
+                <DataGridTextColumn Header="Примечение" Binding="{Binding Notes}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button x:Name="AddBTN" Content="Добавить" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center" Background="White" Height="20" Width="100" Click="AddBTN_Click"/>
+        <Button x:Name="DelBTN" IsEnabled="False" Content="Удалить" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Background="White" Height="20" Width="100"/>
+        <Button x:Name="EddBTN" Content="Изменить" Grid.Row="4" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Background="White" Height="20" Width="100" Click="EddBTN_Click"/>
+        <Button x:Name="BackBTN" Content="Назад"  Grid.Column="4" Grid.Row="4" VerticalAlignment="Center" Width="120" Background="White" Click="BackBTN_Click"/>
+    </Grid>
+</Window>

@@ -1,0 +1,45 @@
+﻿<Window x:Class="MuraevKursovoi.WinListViev"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MuraevKursovoi"
+        mc:Ignorable="d"
+        Title="Просмотр" Height="450" Width="800" Style="{StaticResource DefoultWindow}">
+    <Grid Background="Aquamarine">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.ColumnSpan="5" Height="15" VerticalAlignment="Top" Background="White"  Orientation="Horizontal">
+            <TextBlock Text="О программе" FontSize="9" VerticalAlignment="Center" Margin="5,0,0,0" MouseDown="TextBlockMes_MouseDown" />
+            <TextBlock Text="Выход" FontSize="9" VerticalAlignment="Center"  Margin="5,0,0,0" MouseDown="TextBlock_MouseDown" />
+        </StackPanel>
+        
+        <DataGrid Name="DGviev" Grid.Row="1" Grid.ColumnSpan="5" Grid.RowSpan="3" Margin="15" AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding IDVendor}" CanUserSort="True"/>
+                <DataGridTextColumn Header="Наименование" Binding="{Binding Name}" CanUserSort="True"/>
+                <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}" CanUserSort="True"/>
+                <DataGridTextColumn Header="Адрес" Binding="{Binding Adress}" CanUserSort="True"/>
+                <DataGridTextColumn Header="Менеджер" Binding="{Binding Manager}" CanUserSort="True"/>
+                <DataGridTextColumn Header="Примечание" Binding="{Binding Tips}" CanUserSort="True"/>
+
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Content="Добавить" x:Name="AddBTN" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center" Background="White" Height="20" Width="100" Click="AddBTN_Click"/>
+        <Button IsEnabled="False" Content="Удалить" x:Name="DelBTN" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Background="White" Height="20" Width="100" Click="DelBTN_Click"/>
+        <Button Content="Изменить" x:Name="UpBTN" Grid.Row="4" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Background="White" Height="20" Width="100" Click="UpBTN_Click"/>
+        <Button x:Name="BackBTN" Content="Назад" Grid.Row="4" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center" Background="White" Height="20" Width="100" Click="BackBTN_Click"/>
+    </Grid>
+</Window>

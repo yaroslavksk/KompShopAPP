@@ -1,0 +1,626 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище KompShopModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="IDClient" />
+          </Key>
+          <Property Name="IDClient" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Surname" Type="nvarchar" MaxLength="30" />
+          <Property Name="Name" Type="nvarchar" MaxLength="30" />
+          <Property Name="Patronymic" Type="nvarchar" MaxLength="30" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="11" />
+        </EntityType>
+        <EntityType Name="Delivery">
+          <Key>
+            <PropertyRef Name="IDDelivery" />
+          </Key>
+          <Property Name="IDDelivery" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDVendor" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="Notes" Type="nvarchar" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="DeliveryComposition">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDDelivery" Type="int" />
+          <Property Name="IDProduct" Type="int" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="IDOrder" />
+          </Key>
+          <Property Name="IDOrder" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDPersonal" Type="int" Nullable="false" />
+          <Property Name="IDClient" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" />
+          <Property Name="Tips" Type="nvarchar" MaxLength="100" />
+          <Property Name="IsFinily" Type="bit" />
+          <Property Name="IsProcess" Type="bit" />
+        </EntityType>
+        <EntityType Name="OrderComposition">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDOrder" Type="int" />
+          <Property Name="IDProduct" Type="int" />
+          <Property Name="Quantity" Type="int" />
+        </EntityType>
+        <EntityType Name="Personal">
+          <Key>
+            <PropertyRef Name="IDPersonal" />
+          </Key>
+          <Property Name="IDPersonal" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Surname" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="30" />
+          <Property Name="Patronymic" Type="nvarchar" MaxLength="30" />
+          <Property Name="DateBirth" Type="date" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="18" />
+          <Property Name="Position" Type="nvarchar" MaxLength="50" />
+          <Property Name="Login" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="Tips" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Price">
+          <Key>
+            <PropertyRef Name="IDPrice" />
+          </Key>
+          <Property Name="IDPrice" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDProduct" Type="int" Nullable="false" />
+          <Property Name="Price" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Vendor">
+          <Key>
+            <PropertyRef Name="IDVendor" />
+          </Key>
+          <Property Name="IDVendor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Maneger" Type="nvarchar" MaxLength="150" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Adress" Type="nvarchar" MaxLength="150" />
+          <Property Name="Tips" Type="nvarchar" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="WareHouse">
+          <Key>
+            <PropertyRef Name="IDProduct" />
+          </Key>
+          <Property Name="IDProduct" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="150" />
+          <Property Name="FullQuantity" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Delivery_Vendor">
+          <End Role="Vendor" Type="Self.Vendor" Multiplicity="1" />
+          <End Role="Delivery" Type="Self.Delivery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vendor">
+              <PropertyRef Name="IDVendor" />
+            </Principal>
+            <Dependent Role="Delivery">
+              <PropertyRef Name="IDVendor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DeliveryComposition_Delivery">
+          <End Role="Delivery" Type="Self.Delivery" Multiplicity="0..1" />
+          <End Role="DeliveryComposition" Type="Self.DeliveryComposition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Delivery">
+              <PropertyRef Name="IDDelivery" />
+            </Principal>
+            <Dependent Role="DeliveryComposition">
+              <PropertyRef Name="IDDelivery" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DeliveryComposition_WareHouse">
+          <End Role="WareHouse" Type="Self.WareHouse" Multiplicity="0..1" />
+          <End Role="DeliveryComposition" Type="Self.DeliveryComposition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WareHouse">
+              <PropertyRef Name="IDProduct" />
+            </Principal>
+            <Dependent Role="DeliveryComposition">
+              <PropertyRef Name="IDProduct" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Client">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="IDClient" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="IDClient" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Personal">
+          <End Role="Personal" Type="Self.Personal" Multiplicity="1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Personal">
+              <PropertyRef Name="IDPersonal" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="IDPersonal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderComposition_Order">
+          <End Role="Order" Type="Self.Order" Multiplicity="0..1" />
+          <End Role="OrderComposition" Type="Self.OrderComposition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="IDOrder" />
+            </Principal>
+            <Dependent Role="OrderComposition">
+              <PropertyRef Name="IDOrder" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderComposition_WareHouse">
+          <End Role="WareHouse" Type="Self.WareHouse" Multiplicity="0..1" />
+          <End Role="OrderComposition" Type="Self.OrderComposition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WareHouse">
+              <PropertyRef Name="IDProduct" />
+            </Principal>
+            <Dependent Role="OrderComposition">
+              <PropertyRef Name="IDProduct" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Price_WareHouse">
+          <End Role="WareHouse" Type="Self.WareHouse" Multiplicity="1" />
+          <End Role="Price" Type="Self.Price" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WareHouse">
+              <PropertyRef Name="IDProduct" />
+            </Principal>
+            <Dependent Role="Price">
+              <PropertyRef Name="IDProduct" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище KompShopModelContainer">
+          <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Delivery" EntityType="Self.Delivery" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DeliveryComposition" EntityType="Self.DeliveryComposition" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderComposition" EntityType="Self.OrderComposition" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Personal" EntityType="Self.Personal" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Price" EntityType="Self.Price" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vendor" EntityType="Self.Vendor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WareHouse" EntityType="Self.WareHouse" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Delivery_Vendor" Association="Self.FK_Delivery_Vendor">
+            <End Role="Vendor" EntitySet="Vendor" />
+            <End Role="Delivery" EntitySet="Delivery" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DeliveryComposition_Delivery" Association="Self.FK_DeliveryComposition_Delivery">
+            <End Role="Delivery" EntitySet="Delivery" />
+            <End Role="DeliveryComposition" EntitySet="DeliveryComposition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DeliveryComposition_WareHouse" Association="Self.FK_DeliveryComposition_WareHouse">
+            <End Role="WareHouse" EntitySet="WareHouse" />
+            <End Role="DeliveryComposition" EntitySet="DeliveryComposition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Client" Association="Self.FK_Order_Client">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Personal" Association="Self.FK_Order_Personal">
+            <End Role="Personal" EntitySet="Personal" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderComposition_Order" Association="Self.FK_OrderComposition_Order">
+            <End Role="Order" EntitySet="Order" />
+            <End Role="OrderComposition" EntitySet="OrderComposition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderComposition_WareHouse" Association="Self.FK_OrderComposition_WareHouse">
+            <End Role="WareHouse" EntitySet="WareHouse" />
+            <End Role="OrderComposition" EntitySet="OrderComposition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Price_WareHouse" Association="Self.FK_Price_WareHouse">
+            <End Role="WareHouse" EntitySet="WareHouse" />
+            <End Role="Price" EntitySet="Price" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="KompShopModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="KompShopEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Client" EntityType="KompShopModel.Client" />
+          <EntitySet Name="Delivery" EntityType="KompShopModel.Delivery" />
+          <EntitySet Name="DeliveryComposition" EntityType="KompShopModel.DeliveryComposition" />
+          <EntitySet Name="Order" EntityType="KompShopModel.Order" />
+          <EntitySet Name="OrderComposition" EntityType="KompShopModel.OrderComposition" />
+          <EntitySet Name="Personal" EntityType="KompShopModel.Personal" />
+          <EntitySet Name="Price" EntityType="KompShopModel.Price" />
+          <EntitySet Name="Vendor" EntityType="KompShopModel.Vendor" />
+          <EntitySet Name="WareHouse" EntityType="KompShopModel.WareHouse" />
+          <AssociationSet Name="FK_Order_Client" Association="KompShopModel.FK_Order_Client">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Delivery_Vendor" Association="KompShopModel.FK_Delivery_Vendor">
+            <End Role="Vendor" EntitySet="Vendor" />
+            <End Role="Delivery" EntitySet="Delivery" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DeliveryComposition_Delivery" Association="KompShopModel.FK_DeliveryComposition_Delivery">
+            <End Role="Delivery" EntitySet="Delivery" />
+            <End Role="DeliveryComposition" EntitySet="DeliveryComposition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DeliveryComposition_WareHouse" Association="KompShopModel.FK_DeliveryComposition_WareHouse">
+            <End Role="WareHouse" EntitySet="WareHouse" />
+            <End Role="DeliveryComposition" EntitySet="DeliveryComposition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Personal" Association="KompShopModel.FK_Order_Personal">
+            <End Role="Personal" EntitySet="Personal" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderComposition_Order" Association="KompShopModel.FK_OrderComposition_Order">
+            <End Role="Order" EntitySet="Order" />
+            <End Role="OrderComposition" EntitySet="OrderComposition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderComposition_WareHouse" Association="KompShopModel.FK_OrderComposition_WareHouse">
+            <End Role="WareHouse" EntitySet="WareHouse" />
+            <End Role="OrderComposition" EntitySet="OrderComposition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Price_WareHouse" Association="KompShopModel.FK_Price_WareHouse">
+            <End Role="WareHouse" EntitySet="WareHouse" />
+            <End Role="Price" EntitySet="Price" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="IDClient" />
+          </Key>
+          <Property Name="IDClient" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Surname" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Patronymic" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Order" Relationship="KompShopModel.FK_Order_Client" FromRole="Client" ToRole="Order" />
+        </EntityType>
+        <EntityType Name="Delivery">
+          <Key>
+            <PropertyRef Name="IDDelivery" />
+          </Key>
+          <Property Name="IDDelivery" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDVendor" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Vendor" Relationship="KompShopModel.FK_Delivery_Vendor" FromRole="Delivery" ToRole="Vendor" />
+          <NavigationProperty Name="DeliveryComposition" Relationship="KompShopModel.FK_DeliveryComposition_Delivery" FromRole="Delivery" ToRole="DeliveryComposition" />
+          <Property Name="Notes" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DeliveryComposition">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDDelivery" Type="Int32" />
+          <Property Name="IDProduct" Type="Int32" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <NavigationProperty Name="Delivery" Relationship="KompShopModel.FK_DeliveryComposition_Delivery" FromRole="DeliveryComposition" ToRole="Delivery" />
+          <NavigationProperty Name="WareHouse" Relationship="KompShopModel.FK_DeliveryComposition_WareHouse" FromRole="DeliveryComposition" ToRole="WareHouse" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="IDOrder" />
+          </Key>
+          <Property Name="IDOrder" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDPersonal" Type="Int32" Nullable="false" />
+          <Property Name="IDClient" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="Tips" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IsFinily" Type="Boolean" />
+          <Property Name="IsProcess" Type="Boolean" />
+          <NavigationProperty Name="Client" Relationship="KompShopModel.FK_Order_Client" FromRole="Order" ToRole="Client" />
+          <NavigationProperty Name="Personal" Relationship="KompShopModel.FK_Order_Personal" FromRole="Order" ToRole="Personal" />
+          <NavigationProperty Name="OrderComposition" Relationship="KompShopModel.FK_OrderComposition_Order" FromRole="Order" ToRole="OrderComposition" />
+        </EntityType>
+        <EntityType Name="OrderComposition">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDOrder" Type="Int32" />
+          <Property Name="IDProduct" Type="Int32" />
+          <Property Name="Quantity" Type="Int32" />
+          <NavigationProperty Name="Order" Relationship="KompShopModel.FK_OrderComposition_Order" FromRole="OrderComposition" ToRole="Order" />
+          <NavigationProperty Name="WareHouse" Relationship="KompShopModel.FK_OrderComposition_WareHouse" FromRole="OrderComposition" ToRole="WareHouse" />
+        </EntityType>
+        <EntityType Name="Personal">
+          <Key>
+            <PropertyRef Name="IDPersonal" />
+          </Key>
+          <Property Name="IDPersonal" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Surname" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Patronymic" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="DateBirth" Type="DateTime" Precision="0" />
+          <Property Name="Phone" Type="String" MaxLength="18" FixedLength="false" Unicode="true" />
+          <Property Name="Position" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Login" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="Tips" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Order" Relationship="KompShopModel.FK_Order_Personal" FromRole="Personal" ToRole="Order" />
+        </EntityType>
+        <EntityType Name="Price">
+          <Key>
+            <PropertyRef Name="IDPrice" />
+          </Key>
+          <Property Name="IDPrice" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDProduct" Type="Int32" Nullable="false" />
+          <Property Name="Price1" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="WareHouse" Relationship="KompShopModel.FK_Price_WareHouse" FromRole="Price" ToRole="WareHouse" />
+        </EntityType>
+        <EntityType Name="Vendor">
+          <Key>
+            <PropertyRef Name="IDVendor" />
+          </Key>
+          <Property Name="IDVendor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Maneger" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Adress" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Tips" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Delivery" Relationship="KompShopModel.FK_Delivery_Vendor" FromRole="Vendor" ToRole="Delivery" />
+        </EntityType>
+        <EntityType Name="WareHouse">
+          <Key>
+            <PropertyRef Name="IDProduct" />
+          </Key>
+          <Property Name="IDProduct" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="FullQuantity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DeliveryComposition" Relationship="KompShopModel.FK_DeliveryComposition_WareHouse" FromRole="WareHouse" ToRole="DeliveryComposition" />
+          <NavigationProperty Name="OrderComposition" Relationship="KompShopModel.FK_OrderComposition_WareHouse" FromRole="WareHouse" ToRole="OrderComposition" />
+          <NavigationProperty Name="Price" Relationship="KompShopModel.FK_Price_WareHouse" FromRole="WareHouse" ToRole="Price" />
+        </EntityType>
+        <Association Name="FK_Order_Client">
+          <End Type="KompShopModel.Client" Role="Client" Multiplicity="1" />
+          <End Type="KompShopModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="IDClient" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="IDClient" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Delivery_Vendor">
+          <End Type="KompShopModel.Vendor" Role="Vendor" Multiplicity="1" />
+          <End Type="KompShopModel.Delivery" Role="Delivery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vendor">
+              <PropertyRef Name="IDVendor" />
+            </Principal>
+            <Dependent Role="Delivery">
+              <PropertyRef Name="IDVendor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DeliveryComposition_Delivery">
+          <End Type="KompShopModel.Delivery" Role="Delivery" Multiplicity="0..1" />
+          <End Type="KompShopModel.DeliveryComposition" Role="DeliveryComposition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Delivery">
+              <PropertyRef Name="IDDelivery" />
+            </Principal>
+            <Dependent Role="DeliveryComposition">
+              <PropertyRef Name="IDDelivery" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DeliveryComposition_WareHouse">
+          <End Type="KompShopModel.WareHouse" Role="WareHouse" Multiplicity="0..1" />
+          <End Type="KompShopModel.DeliveryComposition" Role="DeliveryComposition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WareHouse">
+              <PropertyRef Name="IDProduct" />
+            </Principal>
+            <Dependent Role="DeliveryComposition">
+              <PropertyRef Name="IDProduct" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Personal">
+          <End Type="KompShopModel.Personal" Role="Personal" Multiplicity="1" />
+          <End Type="KompShopModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Personal">
+              <PropertyRef Name="IDPersonal" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="IDPersonal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderComposition_Order">
+          <End Type="KompShopModel.Order" Role="Order" Multiplicity="0..1" />
+          <End Type="KompShopModel.OrderComposition" Role="OrderComposition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="IDOrder" />
+            </Principal>
+            <Dependent Role="OrderComposition">
+              <PropertyRef Name="IDOrder" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderComposition_WareHouse">
+          <End Type="KompShopModel.WareHouse" Role="WareHouse" Multiplicity="0..1" />
+          <End Type="KompShopModel.OrderComposition" Role="OrderComposition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WareHouse">
+              <PropertyRef Name="IDProduct" />
+            </Principal>
+            <Dependent Role="OrderComposition">
+              <PropertyRef Name="IDProduct" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Price_WareHouse">
+          <End Type="KompShopModel.WareHouse" Role="WareHouse" Multiplicity="1" />
+          <End Type="KompShopModel.Price" Role="Price" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WareHouse">
+              <PropertyRef Name="IDProduct" />
+            </Principal>
+            <Dependent Role="Price">
+              <PropertyRef Name="IDProduct" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище KompShopModelContainer" CdmEntityContainer="KompShopEntities">
+          <EntitySetMapping Name="Client">
+            <EntityTypeMapping TypeName="KompShopModel.Client">
+              <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Patronymic" ColumnName="Patronymic" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="IDClient" ColumnName="IDClient" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Delivery">
+            <EntityTypeMapping TypeName="KompShopModel.Delivery">
+              <MappingFragment StoreEntitySet="Delivery">
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="IDVendor" ColumnName="IDVendor" />
+                <ScalarProperty Name="IDDelivery" ColumnName="IDDelivery" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DeliveryComposition">
+            <EntityTypeMapping TypeName="KompShopModel.DeliveryComposition">
+              <MappingFragment StoreEntitySet="DeliveryComposition">
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="IDProduct" ColumnName="IDProduct" />
+                <ScalarProperty Name="IDDelivery" ColumnName="IDDelivery" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Order">
+            <EntityTypeMapping TypeName="KompShopModel.Order">
+              <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="IsProcess" ColumnName="IsProcess" />
+                <ScalarProperty Name="IsFinily" ColumnName="IsFinily" />
+                <ScalarProperty Name="Tips" ColumnName="Tips" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="IDClient" ColumnName="IDClient" />
+                <ScalarProperty Name="IDPersonal" ColumnName="IDPersonal" />
+                <ScalarProperty Name="IDOrder" ColumnName="IDOrder" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderComposition">
+            <EntityTypeMapping TypeName="KompShopModel.OrderComposition">
+              <MappingFragment StoreEntitySet="OrderComposition">
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="IDProduct" ColumnName="IDProduct" />
+                <ScalarProperty Name="IDOrder" ColumnName="IDOrder" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Personal">
+            <EntityTypeMapping TypeName="KompShopModel.Personal">
+              <MappingFragment StoreEntitySet="Personal">
+                <ScalarProperty Name="Tips" ColumnName="Tips" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="DateBirth" ColumnName="DateBirth" />
+                <ScalarProperty Name="Patronymic" ColumnName="Patronymic" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="IDPersonal" ColumnName="IDPersonal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Price">
+            <EntityTypeMapping TypeName="KompShopModel.Price">
+              <MappingFragment StoreEntitySet="Price">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Price1" ColumnName="Price" />
+                <ScalarProperty Name="IDProduct" ColumnName="IDProduct" />
+                <ScalarProperty Name="IDPrice" ColumnName="IDPrice" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vendor">
+            <EntityTypeMapping TypeName="KompShopModel.Vendor">
+              <MappingFragment StoreEntitySet="Vendor">
+                <ScalarProperty Name="Tips" ColumnName="Tips" />
+                <ScalarProperty Name="Adress" ColumnName="Adress" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Maneger" ColumnName="Maneger" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IDVendor" ColumnName="IDVendor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WareHouse">
+            <EntityTypeMapping TypeName="KompShopModel.WareHouse">
+              <MappingFragment StoreEntitySet="WareHouse">
+                <ScalarProperty Name="FullQuantity" ColumnName="FullQuantity" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IDProduct" ColumnName="IDProduct" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
